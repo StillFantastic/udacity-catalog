@@ -1,0 +1,19 @@
+{% extends "dashboard.html" %}
+
+{% block title %}{{category_name}}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='dashboard.css') }}">
+{% endblock %}
+
+{% block sidebar_content %}
+  <li class="active"><a href="{{url_for('index')}}">All <span class="sr-only">(current)</span></a></li>
+  {% for category in categories %}
+	<li>
+  		<a href = "{{url_for('categoryItems',category_name=category.name)}}">
+  		    {{category.name}}
+  		</a>
+
+	</li>
+  {% endfor %}
+{% endblock %}
