@@ -37,7 +37,7 @@ class Items(Base):
     name = Column(String(50), nullable=False)
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
-    category_name = Column(Integer, ForeignKey('category.name'))
+    category_name = Column(String(50), ForeignKey('category.name'))
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
@@ -49,13 +49,12 @@ class Items(Base):
         return {
             'name': self.name,
             'description': self.description,
-            'category': self.category,
+            'category_name': self.category_name,
             'user_id': self.user_id,
             'id': self.id
         }
 
 
 engine = create_engine('sqlite:///itemcatalog.db')
-
 
 Base.metadata.create_all(engine)

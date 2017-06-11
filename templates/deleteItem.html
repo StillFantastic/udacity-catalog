@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% block title %}Delete {{item.name}}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='form.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <h1 class="page-header">Delete {{item.name}}</h1>
+        <p class = "text-danger"> Are you sure you want to delete {{item.name}}? </h2>
+        <form action="#" method = 'post'>
+        	<button type="submit" class="btn btn-danger" id="submit" type="submit">Delete</button>
+        	<a href = "{{url_for('index')}}" class="btn btn-default">Cancel</a>
+        </form>
+
+      </div>
+    </div>
+{% endblock %}
+
+

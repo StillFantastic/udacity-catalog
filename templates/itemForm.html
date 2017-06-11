@@ -1,15 +1,11 @@
 {% extends "main.html" %}
 {% block title %}Create Item{% endblock %}
-{% block head %}
-  {{ super() }}
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='form.css') }}">
-{% endblock %}
 {% block content %}
     <div class="container">
-      <div class="form">
-        <h1 class="page-header">Create Item</h1>
+      <div class="row">
+        <h1 class="page-header">{{action}} Item</h1>
 <!--Adapted from http://pythonthusiast.pythonblogs.com/230_pythonthusiast/archive/1315_flask_biography_tutorial_part_vi__adding_sign_up_form_using_bootstrap_3_and_flask-wtf.html-->
-        <form action="{{url_for('newItem')}}" class="form-horizontal" method="POST">
+        <form action="{{url}}" class="form-horizontal" method="POST">
                 <div class="form-group {% if form.name.errors %} has-error {% endif %}">
                 {{form.name.label(class="col-sm-1")}}
                 <div class="col-sm-5">
@@ -26,15 +22,15 @@
                 <p class="col-sm-6 help-block">
                 {{ form.description.errors[0] }}
                 </div>
-                <div class="form-group {% if form.category.errors %} has-error {% endif %}">
-                {{form.category.label(class="col-sm-1")}}
+                <div class="form-group {% if form.category_name.errors %} has-error {% endif %}">
+                {{form.category_name.label(class="col-sm-1")}}
                 <div class="col-sm-5">
-                {{form.category(class="form-control")}}
+                {{form.category_name(class="form-control")}}
                 </div>
                 <p class="col-sm-6 help-block">
-                {{ form.category.errors[0] }}
+                {{ form.category_name.errors[0] }}
                 </div>
-                <button class="btn btn-primary" type="submit">Sign Up</button>
+                <button class="btn btn-primary" type="submit">Create</button>
         </form>
       </div>
     </div>

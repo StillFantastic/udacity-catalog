@@ -14,35 +14,20 @@
 	      </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="item-list">
-          <a class="btn btn-success" href="{{url_for('newItem')}}" id="create-btn">Create</a>
-          <h1 class="page-header">{{category_name}}</h1>
+          {% block main_content %}
+                  <div class = 'flash'>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{message}}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+        </div>
 
-          <!--<h2 class="sub-header">Section title</h2>-->
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Category</th>
-                  <th>Time Added</th>
-                </tr>
-                
-              </thead>
-              <tbody>
-                {% for item in items %}
-                <tr>
-                  <td>{{item.id}}</td>
-                  <td>{{item.name}}</td>
-                  <td>{{item.description}}</td>
-                  <td>{{item.category_name}}</td>
-                  <td>{{item.time_added}}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+          {% endblock %}
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
-{% extends "index.html" %}
-
-{% block title %}{{category_name}}{% endblock %}
+{% extends "dashboard.html" %}
+{% block title %}{{item.name}}{% endblock %}
 
 {% block sidebar_content %}
   <li><a href="{{url_for('index')}}">All</a></li>
@@ -15,4 +14,11 @@
 		</li>
 		{% endif %}
   {% endfor %}
+{% endblock %}
+
+{% block main_content %}
+    <h1 class="page-header">{{item.name}}</h1>
+    <p>{{item.description}}</p>
+    <a class="btn btn-default" href="{{url_for('editItem', item_id=item.id)}}" id="edit-btn">Edit</a>
+    <a class="btn btn-danger" href="{{url_for('deleteItem', item_id=item.id)}}" id="delete-btn">Delete</a>
 {% endblock %}
