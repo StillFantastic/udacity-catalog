@@ -1,57 +1,56 @@
 {% extends "dashboard.html" %}
 
 {% block title %}{{category_name}}{% endblock %}
+
 {% block head %}
-  {{ super() }}
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='dashboard.css') }}">
+    {{ super() }}
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='dashboard.css') }}">
 {% endblock %}
 
 {% block sidebar_content %}
-  <li class="active"><a href="{{url_for('index')}}">All <span class="sr-only">(current)</span></a></li>
-  {% for category in categories %}
-	<li>
-  		<a href = "{{url_for('categoryItems',category_name=category.name)}}">
-  		    {{category.name}}
-  		</a>
-
-	</li>
-  {% endfor %}
+    <li class="active"><a href="{{url_for('index')}}">All <span class="sr-only">(current)</span></a></li>
+      {% for category in categories %}
+        	<li>
+          		<a href = "{{url_for('categoryItems',category_name=category.name)}}">
+          		    {{category.name}}
+          		</a>
+        
+          </li>
+      {% endfor %}
 {% endblock %}
 
 {% block main_content %}
-{{ super() }}
-<a class="btn btn-primary" href="{{url_for('newItem')}}" id="create-btn">Create</a>
-<h1 class="page-header">{{category_name}}</h1>
-
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th class="col-md-2">Name</th>
-        <th class="col-md-4">Description</th>
-        <th class="col-md-2">Category</th>
-        <th class="col-md-2">Time Added</th>
-        <th class="col-md-2"></th>
-      </tr>
-      
-    </thead>
-    <tbody>
-      {% for item in items %}
-      <tr>
-        <td class="col-md-2">{{item.name}}</td>
-        <td class="col-md-4">{{item.description}}</td>
-        <td class="col-md-2">{{item.category_name}}</td>
-        <td class="col-md-2">{{item.time_added}}</td>
-        <td class="col-md-2">
-          <a class="btn btn-default" href="{{url_for('viewItem', item_id=item.id)}}" id="view-btn">View</a>
-          {% if 'username' in session %}
-              <a class="btn btn-default" href="{{url_for('editItem', item_id=item.id)}}" id="edit-btn">Edit</a>
-              <a class="btn btn-danger" href="{{url_for('deleteItem', item_id=item.id)}}" id="delete-btn">Delete</a>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    {{ super() }}
+    <a class="btn btn-primary" href="{{url_for('newItem')}}" id="create-btn">Create</a>
+    <h1 class="page-header">{{category_name}}</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-md-2">Name</th>
+                    <th class="col-md-4">Description</th>
+                    <th class="col-md-2">Category</th>
+                    <th class="col-md-2">Time Added</th>
+                    <th class="col-md-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td class="col-md-2">{{item.name}}</td>
+                        <td class="col-md-4">{{item.description}}</td>
+                        <td class="col-md-2">{{item.category_name}}</td>
+                        <td class="col-md-2">{{item.time_added}}</td>
+                        <td class="col-md-2">
+                            <a class="btn btn-default" href="{{url_for('viewItem', item_id=item.id)}}" id="view-btn">View</a>
+                            {% if 'username' in session %}
+                                <a class="btn btn-default" href="{{url_for('editItem', item_id=item.id)}}" id="edit-btn">Edit</a>
+                                <a class="btn btn-danger" href="{{url_for('deleteItem', item_id=item.id)}}" id="delete-btn">Delete</a>
+                            {% endif %}
+                        </td>
+                      </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

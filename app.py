@@ -148,6 +148,7 @@ def deleteItem(item_id):
         return render_template('deleteItem.html', item=itemToDelete)
 
 
+# Search for items by finding matches in name, description, and category
 @app.route('/search')
 def data():
     query = request.args.get('q')
@@ -310,4 +311,4 @@ def disconnect():
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8000)
