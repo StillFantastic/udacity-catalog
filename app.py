@@ -2,6 +2,7 @@ from dbsetup import Base, User, Category, Items
 from flask import Flask, render_template, request, redirect, jsonify, url_for,\
      flash, make_response
 from flask import session as login_session
+from functools import wraps
 from models import ItemForm
 from sqlalchemy import create_engine, asc, desc, or_
 from sqlalchemy.orm import sessionmaker
@@ -54,11 +55,8 @@ def categoryItems(category_name):
 
 # Create an item
 @app.route('/catalog/new/', methods=['GET', 'POST'])
+@login_required
 def newItem():
-    if 'username' not in login_session:
-        flash('You are not logged in. Please login in order to create items.',
-              'danger')
-        return redirect('/')
     form = ItemForm(request.form)
     if request.method == 'POST':
         if form.validate():
@@ -94,12 +92,8 @@ def viewItem(item_id):
 
 # Edit an item
 @app.route('/catalog/<int:item_id>/edit', methods=['GET', 'POST'])
+@login_required
 def editItem(item_id):
-    if 'username' not in login_session:
-        flash('You are not logged in. Please login in order to edit items.',
-              'danger')
-        return redirect('/')
-
     editedItem = session.query(Items).filter_by(id=item_id).one()
     form = ItemForm(request.form, obj=editedItem)
 
@@ -126,12 +120,8 @@ def editItem(item_id):
 
 # Delete an item
 @app.route('/catalog/<int:item_id>/delete', methods=['GET', 'POST'])
+@login_required
 def deleteItem(item_id):
-    if 'username' not in login_session:
-        flash('You are not logged in. Please login in order to delete items.',
-              'danger')
-        return redirect('/')
-
     itemToDelete = session.query(Items).filter_by(id=item_id).one()
 
     if itemToDelete.user_id != login_session['user_id']:
@@ -195,6 +185,16 @@ def getUserID(email):
         return user.id
     except:
         return None
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            flash('You are not logged in. Please login.')
+            return redirect('/')
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 # JSON APIs to view Item Information
