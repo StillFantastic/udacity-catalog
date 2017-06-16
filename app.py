@@ -5,7 +5,7 @@ from flask import session as login_session
 from functools import wraps
 from models import ItemForm
 from sqlalchemy import create_engine, asc, desc, or_
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, sessionmaker
 import httplib2
 import json
 import random
@@ -22,14 +22,14 @@ engine = create_engine('sqlite:///itemcatalog.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
+session = scoped_session(DBSession)
 
 
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'username' not in login_session:
-            flash('You are not logged in. Please login.')
+            flash('You are not logged in. Please login.', 'danger')
             return redirect('/')
         return f(*args, **kwargs)
     return decorated_function
