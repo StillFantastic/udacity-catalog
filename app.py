@@ -13,6 +13,7 @@ import requests
 import string
 
 app = Flask(__name__)
+app.secret_key = 'super_secret_key'
 
 APPLICATION_NAME = "Item Catalog"
 
@@ -22,6 +23,16 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            flash('You are not logged in. Please login.')
+            return redirect('/')
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 # Show categories and items
@@ -187,16 +198,6 @@ def getUserID(email):
         return None
 
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'username' not in login_session:
-            flash('You are not logged in. Please login.')
-            return redirect('/')
-        return f(*args, **kwargs)
-    return decorated_function
-
-
 # JSON APIs to view Item Information
 @app.route('/catalog/<int:item_id>/JSON')
 def itemJSON(item_id):
@@ -309,6 +310,4 @@ def disconnect():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'super_secret_key'
-    app.debug = True
-    app.run(host='0.0.0.0', port=8000)
+    app.run()
